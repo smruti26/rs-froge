@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ResumeForge — Build ATS-friendly resumes in minutes. Free, no account needed.">
+  <title>ResumeForge — ATS-Ready Resume Builder</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SUBTLE WATERMARK GRID
+     ════════════════════════════════════════════════════════════ -->
+<div class="watermark-bg" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     LOADING OVERLAY
+     ════════════════════════════════════════════════════════════ -->
+<div id="loading-overlay" role="status" aria-label="Loading ResumeForge">
+  <div class="loader-logo-wrap">
+    <!-- Logo SVG -->
+    <svg class="loader-logo-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="44" height="44" rx="12" fill="url(#lg1)"/>
+      <rect x="10" y="11" width="16" height="2.5" rx="1.25" fill="white" opacity=".9"/>
+      <rect x="10" y="16" width="24" height="2.5" rx="1.25" fill="white" opacity=".75"/>
+      <rect x="10" y="21" width="20" height="2.5" rx="1.25" fill="white" opacity=".75"/>
+      <rect x="10" y="26" width="13" height="2.5" rx="1.25" fill="white" opacity=".6"/>
+      <circle cx="33" cy="30" r="7" fill="url(#lg2)"/>
+      <path d="M30 30l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs>
+        <linearGradient id="lg1" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2563EB"/>
+          <stop offset="1" stop-color="#7C3AED"/>
+        </linearGradient>
+        <linearGradient id="lg2" x1="26" y1="23" x2="40" y2="37" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#7C3AED"/>
+          <stop offset="1" stop-color="#2563EB"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="loader-logo-text">ResumeForge</div>
+  </div>
+  <div class="loader-tagline">ATS-Optimized · Free · Instant</div>
+  <div class="loader-track"><div class="loader-fill"></div></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     HEADER
+     ════════════════════════════════════════════════════════════ -->
+<header role="banner">
+  <!-- Logo -->
+  <div class="logo-wrap" onclick="goHome()" role="button" tabindex="0" aria-label="ResumeForge home"
+       onkeydown="if(event.key==='Enter')goHome()">
+    <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="36" height="36" rx="9" fill="url(#hLogo)"/>
+      <rect x="7" y="9" width="13" height="2" rx="1" fill="white" opacity=".9"/>
+      <rect x="7" y="13" width="22" height="2" rx="1" fill="white" opacity=".7"/>
+      <rect x="7" y="17" width="17" height="2" rx="1" fill="white" opacity=".7"/>
+      <rect x="7" y="21" width="11" height="2" rx="1" fill="white" opacity=".5"/>
+      <circle cx="27" cy="25" r="6" fill="url(#hLogo2)"/>
+      <path d="M24.5 25l1.7 1.7 3.3-3.3" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs>
+        <linearGradient id="hLogo" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2563EB"/>
+          <stop offset="1" stop-color="#7C3AED"/>
+        </linearGradient>
+        <linearGradient id="hLogo2" x1="21" y1="19" x2="33" y2="31" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#7C3AED"/>
+          <stop offset="1" stop-color="#2563EB"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <span class="logo-text">ResumeForge</span>
+    <span class="logo-badge">ATS</span>
+  </div>
+
+  <!-- Header Actions -->
+  <div class="header-actions" id="header-actions">
+    <button class="btn btn-ghost btn-sm" id="btn-back"
+            onclick="goHome()" style="display:none" aria-label="Go to home">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      </svg>
+      <span>Home</span>
+    </button>
+
+    <button class="btn btn-outline btn-sm" id="btn-preview"
+            onclick="openPreview()" style="display:none" aria-label="Preview resume">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+      <span>Preview</span>
+    </button>
+
+    <button class="btn btn-purple btn-sm" id="btn-download-header"
+            onclick="openPreview()" style="display:none" aria-label="Download resume">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      <span>Download</span>
+    </button>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════════════
+     LANDING PAGE
+     ════════════════════════════════════════════════════════════ -->
+<main id="landing" role="main">
+
+  <!-- Ambient orbs -->
+  <div class="hero-orb orb-1" aria-hidden="true"></div>
+  <div class="hero-orb orb-2" aria-hidden="true"></div>
+  <div class="hero-orb orb-3" aria-hidden="true"></div>
+
+  <div class="landing-inner">
+
+    <!-- Badge -->
+    <div class="landing-badge anim-1" role="status">
+      <span class="badge-dot" aria-hidden="true"></span>
+      ATS-Optimized &nbsp;·&nbsp; Free &nbsp;·&nbsp; No Signup Required
+    </div>
+
+    <!-- Headline -->
+    <h1 class="landing-headline anim-2">
+      Build your resume.<br>
+      <span class="grad">
+        <span class="underline-wrap">Land the interview.</span>
+      </span>
+    </h1>
+
+    <!-- Subheading -->
+    <p class="landing-sub anim-3">
+      Create a polished, ATS-friendly resume in minutes.
+      Edit every section with our intuitive editor, then export as&nbsp;PDF or Word — completely free.
+    </p>
+
+    <!-- CTA Cards -->
+    <div class="cta-cards anim-4" role="list">
+
+      <div class="cta-card card-create" role="listitem" onclick="createNew()"
+           tabindex="0" onkeydown="if(event.key==='Enter')createNew()"
+           aria-label="Start a new resume from scratch">
+        <div class="cta-card-top">
+          <div class="card-icon-wrap" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="18" x2="12" y2="12"/>
+              <line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+          </div>
+          <div class="card-label">Start from scratch</div>
+          <div class="card-desc">Build your resume step-by-step with our guided editor. ATS-optimized sections included.</div>
+        </div>
+        <div class="card-arrow" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="cta-card card-upload" role="listitem" onclick="triggerUpload()"
+           tabindex="0" onkeydown="if(event.key==='Enter')triggerUpload()"
+           aria-label="Upload existing resume to auto-parse">
+        <div class="cta-card-top">
+          <div class="card-icon-wrap" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <div class="card-label">Upload existing resume</div>
+          <div class="card-desc">Import a PDF or text file — we'll auto-parse the content into editable fields.</div>
+        </div>
+        <div class="card-arrow" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature pills -->
+    <div class="feature-strip anim-5" role="list">
+      <span class="feat" role="listitem">
+        <span class="feat-check" aria-hidden="true">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </span>
+        ATS-Friendly format
+      </span>
+      <span class="feat" role="listitem">
+        <span class="feat-check" aria-hidden="true">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </span>
+        PDF &amp; DOCX export
+      </span>
+      <span class="feat" role="listitem">
+        <span class="feat-check" aria-hidden="true">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </span>
+        Smart auto-parse
+      </span>
+      <span class="feat" role="listitem">
+        <span class="feat-check" aria-hidden="true">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </span>
+        100% free &amp; private
+      </span>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row anim-6" role="list">
+      <div class="stat" role="listitem">
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Resume Sections</div>
+      </div>
+      <div class="stat" role="listitem">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Export Formats</div>
+      </div>
+      <div class="stat" role="listitem">
+        <div class="stat-num">0s</div>
+        <div class="stat-label">Setup Time</div>
+      </div>
+      <div class="stat" role="listitem">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">ATS Compatible</div>
+      </div>
+    </div>
+
+  </div><!-- /landing-inner -->
+</main>
+
+<!-- Hidden file input -->
+<input type="file" id="upload-input" accept=".pdf,.txt,.doc,.docx"
+       onchange="handleFileUpload(event)" aria-hidden="true">
+
+<!-- ══════════════════════════════════════════════════════════════
+     EDITOR
+     ════════════════════════════════════════════════════════════ -->
+<div id="editor" aria-label="Resume editor">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar" role="navigation" aria-label="Resume sections">
+    <div class="sidebar-header">
+      <div class="sidebar-header-top">
+        <span class="sidebar-label">Sections</span>
+      </div>
+      <!-- Score -->
+      <div class="score-labels">
+        <span>Completeness</span>
+        <span id="score-pct" aria-live="polite">0%</span>
+      </div>
+      <div class="score-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="score-fill" id="score-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-section="personal" onclick="switchSection('personal')" aria-current="page">
+        <span class="nav-icon" aria-hidden="true">👤</span> Personal Info
+        <span class="nav-dot" aria-hidden="true"></span>
+      </button>
+      <button class="nav-item" data-section="summary" onclick="switchSection('summary')">
+        <span class="nav-icon" aria-hidden="true">💡</span> Summary
+        <span class="nav-dot" aria-hidden="true"></span>
+      </button>
+      <button class="nav-item" data-section="experience" onclick="switchSection('experience')">
+        <span class="nav-icon" aria-hidden="true">💼</span> Experience
+        <span class="nav-dot" aria-hidden="true"></span>
+      </button>
+      <button class="nav-item" data-section="education" onclick="switchSection('education')">
+        <span class="nav-icon" aria-hidden="true">🎓</span> Education
+        <span class="nav-dot" aria-hidden="true"></span>
+      </button>
+      <button class="nav-item" data-section="skills" onclick="switchSection('skills')">
+        <span class="nav-icon" aria-hidden="true">⚡</span> Skills
+        <span class="nav-dot" aria-hidden="true"></span>
+      </button>
+      <button class="nav-item" data-section="projects" onclick="switchSection('projects')">
+        <span class="nav-icon" aria-hidden="true">🚀</span> Projects
+        <span class="nav-dot" aria-hidden="true"></span>
+      </button>
+      <button class="nav-item" data-section="certifications" onclick="switchSection('certifications')">
+        <span class="nav-icon" aria-hidden="true">🏅</span> Certifications
+        <span class="nav-dot" aria-hidden="true"></span>
+      </button>
+      <button class="nav-item" data-section="languages" onclick="switchSection('languages')">
+        <span class="nav-icon" aria-hidden="true">🌐</span> Languages
+        <span class="nav-dot" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </aside>
+
+  <!-- ── EDITOR MAIN ── -->
+  <main class="editor-main" role="main">
+
+    <!-- ▸ PERSONAL INFO ───────────────────────────────────────── -->
+    <section id="panel-personal" class="section-panel active" aria-label="Personal Information">
+      <div class="panel-header">
+        <h2 class="panel-title">Personal Information</h2>
+        <p class="panel-sub">Your contact details appear at the top of your resume.</p>
+        <span class="ats-tip">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          ATS Tip: Use a professional email and include a LinkedIn profile
+        </span>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="p-firstname">First Name <span class="req-star" aria-hidden="true">*</span></label>
+          <input type="text" id="p-firstname" placeholder="Jane" autocomplete="given-name"
+                 oninput="updateData('personal','firstName',this.value)"
+                 onblur="validateField('p-firstname')"
+                 aria-required="true">
+        </div>
+        <div class="form-group">
+          <label for="p-lastname">Last Name <span class="req-star" aria-hidden="true">*</span></label>
+          <input type="text" id="p-lastname" placeholder="Doe" autocomplete="family-name"
+                 oninput="updateData('personal','lastName',this.value)"
+                 onblur="validateField('p-lastname')"
+                 aria-required="true">
+        </div>
+        <div class="form-group full">
+          <label for="p-title">Professional Title</label>
+          <input type="text" id="p-title" placeholder="Senior Software Engineer" autocomplete="organization-title"
+                 oninput="updateData('personal','title',this.value)">
+          <span class="field-hint">e.g. Full-Stack Developer · Product Manager · Data Analyst</span>
+        </div>
+        <div class="form-group">
+          <label for="p-email">Email Address <span class="req-star" aria-hidden="true">*</span></label>
+          <input type="email" id="p-email" placeholder="jane@example.com" autocomplete="email"
+                 oninput="updateData('personal','email',this.value)"
+                 onblur="validateField('p-email')"
+                 aria-required="true">
+        </div>
+        <div class="form-group">
+          <label for="p-phone">Phone Number</label>
+          <input type="tel" id="p-phone" placeholder="+1 (555) 000-0000" autocomplete="tel"
+                 oninput="updateData('personal','phone',this.value)">
+        </div>
+        <div class="form-group">
+          <label for="p-location">Location</label>
+          <input type="text" id="p-location" placeholder="San Francisco, CA" autocomplete="address-level2"
+                 oninput="updateData('personal','location',this.value)">
+          <span class="field-hint">City, State or Remote</span>
+        </div>
+        <div class="form-group">
+          <label for="p-linkedin">LinkedIn URL</label>
+          <input type="url" id="p-linkedin" placeholder="linkedin.com/in/janedoe"
+                 oninput="updateData('personal','linkedin',this.value)">
+        </div>
+        <div class="form-group">
+          <label for="p-website">Website / Portfolio</label>
+          <input type="url" id="p-website" placeholder="janedoe.dev"
+                 oninput="updateData('personal','website',this.value)">
+        </div>
+        <div class="form-group">
+          <label for="p-github">GitHub</label>
+          <input type="text" id="p-github" placeholder="github.com/janedoe"
+                 oninput="updateData('personal','github',this.value)">
+        </div>
+      </div>
+
+      <div class="panel-nav">
+        <button class="btn btn-primary" onclick="switchSection('summary')">
+          Continue to Summary
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ▸ SUMMARY ─────────────────────────────────────────────── -->
+    <section id="panel-summary" class="section-panel" aria-label="Professional Summary">
+      <div class="panel-header">
+        <h2 class="panel-title">Professional Summary</h2>
+        <p class="panel-sub">A compelling 2–4 sentence overview of your professional profile.</p>
+        <span class="ats-tip">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          ATS Tip: Include job-relevant keywords naturally in your summary
+        </span>
+      </div>
+
+      <div class="form-grid single">
+        <div class="form-group">
+          <label for="s-summary">Summary</label>
+          <textarea id="s-summary" rows="6"
+                    placeholder="Results-driven software engineer with 5+ years of experience building scalable web applications. Passionate about clean architecture and performance optimization…"
+                    oninput="updateData('summary','text',this.value)"></textarea>
+          <span class="field-hint">Keep it concise and impactful. 50–120 words works best.</span>
+        </div>
+      </div>
+
+      <div class="panel-nav">
+        <button class="btn btn-ghost" onclick="switchSection('personal')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button class="btn btn-primary" onclick="switchSection('experience')">
+          Continue to Experience
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ▸ EXPERIENCE ──────────────────────────────────────────── -->
+    <section id="panel-experience" class="section-panel" aria-label="Work Experience">
+      <div class="panel-header">
+        <h2 class="panel-title">Work Experience</h2>
+        <p class="panel-sub">List your positions starting with the most recent. Use bullet points with action verbs and metrics.</p>
+        <span class="ats-tip">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          ATS Tip: Quantify achievements — "Increased efficiency by 30%" beats "Improved efficiency"
+        </span>
+      </div>
+
+      <div class="entry-list" id="exp-list" aria-label="Experience entries"></div>
+
+      <button class="btn btn-outline" onclick="addEntry('experience')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Add Work Experience
+      </button>
+
+      <div class="panel-nav">
+        <button class="btn btn-ghost" onclick="switchSection('summary')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button class="btn btn-primary" onclick="switchSection('education')">
+          Continue to Education
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ▸ EDUCATION ───────────────────────────────────────────── -->
+    <section id="panel-education" class="section-panel" aria-label="Education">
+      <div class="panel-header">
+        <h2 class="panel-title">Education</h2>
+        <p class="panel-sub">Include degrees, diplomas, and relevant academic achievements.</p>
+        <span class="ats-tip">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          ATS Tip: Spell out degree types fully — "Bachelor of Science" not "BS"
+        </span>
+      </div>
+
+      <div class="entry-list" id="edu-list" aria-label="Education entries"></div>
+
+      <button class="btn btn-outline" onclick="addEntry('education')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Add Education
+      </button>
+
+      <div class="panel-nav">
+        <button class="btn btn-ghost" onclick="switchSection('experience')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button class="btn btn-primary" onclick="switchSection('skills')">
+          Continue to Skills
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ▸ SKILLS ──────────────────────────────────────────────── -->
+    <section id="panel-skills" class="section-panel" aria-label="Skills">
+      <div class="panel-header">
+        <h2 class="panel-title">Skills</h2>
+        <p class="panel-sub">Add technical and soft skills. Separate multiple skills with commas or press Enter.</p>
+        <span class="ats-tip">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          ATS Tip: Mirror skills from the job description exactly — spelling matters
+        </span>
+      </div>
+
+      <div class="skills-input-row">
+        <input type="text" id="skill-input"
+               placeholder="e.g. JavaScript, React, Project Management…"
+               onkeydown="skillKeyDown(event)"
+               aria-label="Add a skill">
+        <button class="btn btn-primary" onclick="addSkill()">Add</button>
+      </div>
+
+      <div class="tags-container" id="skills-tags" role="list" aria-label="Added skills"></div>
+
+      <div class="panel-nav">
+        <button class="btn btn-ghost" onclick="switchSection('education')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button class="btn btn-primary" onclick="switchSection('projects')">
+          Continue to Projects
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ▸ PROJECTS ────────────────────────────────────────────── -->
+    <section id="panel-projects" class="section-panel" aria-label="Projects">
+      <div class="panel-header">
+        <h2 class="panel-title">Projects</h2>
+        <p class="panel-sub">Highlight personal, open-source, or professional projects that demonstrate your skills.</p>
+      </div>
+
+      <div class="entry-list" id="proj-list" aria-label="Project entries"></div>
+
+      <button class="btn btn-outline" onclick="addEntry('projects')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Add Project
+      </button>
+
+      <div class="panel-nav">
+        <button class="btn btn-ghost" onclick="switchSection('skills')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button class="btn btn-primary" onclick="switchSection('certifications')">
+          Continue to Certifications
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ▸ CERTIFICATIONS ──────────────────────────────────────── -->
+    <section id="panel-certifications" class="section-panel" aria-label="Certifications and Awards">
+      <div class="panel-header">
+        <h2 class="panel-title">Certifications &amp; Awards</h2>
+        <p class="panel-sub">Include professional certifications, licenses, and notable awards.</p>
+      </div>
+
+      <div class="entry-list" id="cert-list" aria-label="Certification entries"></div>
+
+      <button class="btn btn-outline" onclick="addEntry('certifications')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Add Certification
+      </button>
+
+      <div class="panel-nav">
+        <button class="btn btn-ghost" onclick="switchSection('projects')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button class="btn btn-primary" onclick="switchSection('languages')">
+          Continue to Languages
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ▸ LANGUAGES ───────────────────────────────────────────── -->
+    <section id="panel-languages" class="section-panel" aria-label="Languages">
+      <div class="panel-header">
+        <h2 class="panel-title">Languages</h2>
+        <p class="panel-sub">List languages you speak and your proficiency level.</p>
+        <span class="ats-tip">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          Use standard proficiency levels: Native · Fluent · Professional · Conversational · Basic
+        </span>
+      </div>
+
+      <div class="entry-list" id="lang-list" aria-label="Language entries"></div>
+
+      <button class="btn btn-outline" onclick="addEntry('languages')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Add Language
+      </button>
+
+      <div class="panel-nav">
+        <button class="btn btn-ghost" onclick="switchSection('certifications')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button class="btn btn-gradient btn-lg" onclick="openPreview()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          Preview &amp; Export Resume
+        </button>
+      </div>
+    </section>
+
+  </main><!-- /editor-main -->
+</div><!-- /editor -->
+
+<!-- ══════════════════════════════════════════════════════════════
+     PREVIEW OVERLAY
+     ════════════════════════════════════════════════════════════ -->
+<div id="preview-view" role="dialog" aria-modal="true" aria-label="Resume preview">
+  <div class="preview-outer">
+    <div class="preview-toolbar">
+      <div class="preview-toolbar-left">
+        <h3>Resume Preview</h3>
+        <p>ATS-optimized · Print-ready layout</p>
+      </div>
+      <div class="preview-toolbar-btns">
+        <button class="btn btn-glass btn-sm" onclick="downloadPDF()" aria-label="Download as PDF">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Download PDF
+        </button>
+        <button class="btn btn-glass btn-sm" onclick="downloadDOCX()" aria-label="Download as DOCX">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          Download DOCX
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="closePreview()"
+                style="color:rgba(255,255,255,.8)" aria-label="Close preview">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+          Close
+        </button>
+      </div>
+    </div>
+
+    <!-- Rendered ATS document -->
+    <div id="resume-doc" role="document" aria-label="Resume document"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     TOAST NOTIFICATION
+     ════════════════════════════════════════════════════════════ -->
+<div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SCROLL TO TOP BUTTON
+     ════════════════════════════════════════════════════════════ -->
+<button id="scroll-top" aria-label="Scroll to top" title="Scroll to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FOOTER
+     ════════════════════════════════════════════════════════════ -->
+<footer role="contentinfo">
+  <div class="footer-left">
+    <!-- Footer logo icon -->
+    <svg class="footer-logo-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="28" height="28" rx="7" fill="url(#fLogo)"/>
+      <rect x="5" y="7" width="9" height="1.6" rx=".8" fill="white" opacity=".9"/>
+      <rect x="5" y="10" width="15" height="1.6" rx=".8" fill="white" opacity=".7"/>
+      <rect x="5" y="13" width="12" height="1.6" rx=".8" fill="white" opacity=".7"/>
+      <rect x="5" y="16" width="8" height="1.6" rx=".8" fill="white" opacity=".5"/>
+      <circle cx="20.5" cy="19.5" r="5" fill="url(#fLogo2)"/>
+      <path d="M18.5 19.5l1.4 1.4 2.6-2.6" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs>
+        <linearGradient id="fLogo" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2563EB"/><stop offset="1" stop-color="#7C3AED"/>
+        </linearGradient>
+        <linearGradient id="fLogo2" x1="15.5" y1="14.5" x2="25.5" y2="24.5" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#7C3AED"/><stop offset="1" stop-color="#2563EB"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <div class="footer-divider" aria-hidden="true"></div>
+
+    <span class="footer-brand">ResumeForge</span>
+  </div>
+
+  <div class="footer-right">
+    <div class="footer-copy">© All rights reserved by Smruti Ranjan Behera</div>
+    <div class="footer-role">Principal Enterprise Architect – UI/UX &nbsp;·&nbsp; Enterprise Frontend Platforms &nbsp;·&nbsp; React Ecosystem</div>
+  </div>
+</footer>
+
+<!-- Application Script -->
+<script src="script/app.js"></script>
+
+</body>
+</html>
